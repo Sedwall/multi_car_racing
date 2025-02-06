@@ -2,7 +2,7 @@
 <img width="100%" src="https://user-images.githubusercontent.com/11874191/98051650-5339d900-1e02-11eb-8b75-7f241d8687ef.gif"></img>
 This repository contains `MultiCarRacing-v0` a multiplayer variant of Gym's original [`CarRacing-v0` environment](https://gym.openai.com/envs/CarRacing-v0/).
 
-This environment is a simple multi-player continuous contorl task. The state consists of 96x96 pixels for each player. The per-player reward is `-0.1` every timestep and `+1000/num_tiles * (num_agents-past_visitors)/num_agents` for each tile visited. For example, in a race with 2 agents, the first agent to visit a tile receives a reward of `+1000/num_tiles` and the second agent to visit the tile receives a reward of `+500/num_tiles` for that tile. Each agent can only be rewarded once for visiting a particular tile. The motivation behind this reward structure is to be sufficiently dense for simple learnability of the basic driving skill while incentivising competition.
+This environment is a simple multi-player continuous contorl task. The state consists of a 17x3 tensor for each player. The per-player reward is `-0.1` every timestep and `+1000/num_tiles * (num_agents-past_visitors)/num_agents` for each tile visited. For example, in a race with 2 agents, the first agent to visit a tile receives a reward of `+1000/num_tiles` and the second agent to visit the tile receives a reward of `+500/num_tiles` for that tile. Each agent can only be rewarded once for visiting a particular tile. The motivation behind this reward structure is to be sufficiently dense for simple learnability of the basic driving skill while incentivising competition.
 
 ## Installation
 
@@ -42,7 +42,8 @@ while not done:
 
   # Similarly, the structure of this is the same as in CarRacing-v0 with an
   # additional dimension for the different agents, i.e.
-  # obs is of shape (num_agents, 96, 96, 3)
+  # obs is of shape (num_agents, num_previous_states, 17, 3)
+  # or (num_previous_states, 17, 3) if num_agents = 1
   # reward is of shape (num_agents,)
   # done is a bool and info is not used (an empty dict).
   obs, reward, done, info = env.step(action)
@@ -62,6 +63,7 @@ Overview of environment parameters:
 | `backwards_flag`       |`bool` | Shows a small flag if agent driving backwards (Default: `True`). |
 | `h_ratio`              |`float`| Controls horizontal agent location in the state (Default: `0.25`) |
 | `use_ego_color`        |`bool` | In each view the ego vehicle has the same color if  activated (Default: `False`). |
+| `num_previous_states`  |`int`| Controls the number of previous states (Default: `0`) |
 
 This environment contains the `CarRacing-v0` environment as a special case. It can be created via
 
