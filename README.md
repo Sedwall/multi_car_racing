@@ -11,6 +11,14 @@ git clone https://github.com/igilitschenski/multi_car_racing.git
 cd multi_car_racing
 pip install -e .
 ```
+Unfortunately, the installation doesn’t always go smoothly. If you encounter any issues, here are a few things to try:
+```bash
+conda install -c conda-forge shapely # To fix libgeos.so isuuse
+sudo apt-get remove swig # bdox2d-py fix
+sudo apt-get install swig3.0 # bdox2d-py fix
+pip install -e .
+```
+
 
 ## Basic Usage
 After installation, the environment can be tried out by running:
